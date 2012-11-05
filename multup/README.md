@@ -37,7 +37,8 @@ Then to upload multiple images, in your controller function do something like...
 				->upload();
 	
 	Params for ::open($input, $rules, $path, $random = true)
-	$input string : is the name of the file upload element in your view (ex: <input id="fileupload" type="file" name="file" multiple> )
+	$input string : is the name of the file upload element in your view 
+					ex: <input id="fileupload" type="file" name="file" multiple>
 	$rules string: laravel style validation rules string
 	$path string: relative to /public/ to move the images if valid
 	$random bool: Whether or not to randomize the filename, the filename will be set to a 32 character string if true
