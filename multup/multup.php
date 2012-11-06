@@ -27,7 +27,7 @@ class Multup {
 	/* 
 		randomize uploaded filename 
 	*/
-	private $random = true; 
+	private $random; 
 	
 	/* 
 		path relative to /public/ that the image should be saved in 
@@ -39,6 +39,7 @@ class Multup {
 	*/
 	private $input; 
 	
+	
 	/**
 	 * Instantiates the Multup
 	 * @param mixed $file The file array provided by Laravel's Input::file('field_name') or a path to a file
@@ -48,6 +49,7 @@ class Multup {
 		$this->input  = $input;
 		$this->rules  = $rules;
 		$this->path = $path;
+		$this->random = $random;
 	}
 	
 	/**
@@ -121,7 +123,6 @@ class Multup {
 		if($validation->fails()){
 			/* use the messages object for the erros */
 			$errors = $validation->errors;
-		
 		} else {
 
 			$ext = File::extension($filename);
@@ -135,6 +136,8 @@ class Multup {
 			$save = Input::upload($this->input, $path, $filename);
 
 			if($save){
+				
+			
 				$path = URL::to($this->path.$filename);
 			} else {
 				$errors = 'Could not save image';
@@ -143,5 +146,4 @@ class Multup {
 		
 		return compact('errors', 'path', 'filename');
 	}
-
 }
