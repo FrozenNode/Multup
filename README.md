@@ -1,6 +1,10 @@
 # Multup
 
-Multi image uploading and validation for Laravel using the Laravel validation class.
+Multiple image uploading and validation for Laravel using the Laravel validation class.
+
+- **Author:** Nick Kelly
+- **Website:** [http://frozennode.com](http://frozennode.com)
+- **Version:** 1.0.0
 
 ## Installation
 
@@ -52,3 +56,12 @@ Then to upload multiple images, in your controller function do something like...
 ## Example
 
     Coming soon :)
+    
+## Copyright and License
+Administrator was written by Nick Kelly for the Laravel framework.
+Administrator is released under the MIT License. See the LICENSE file for details.
+
+## Changelog
+
+### Multup 1.0.0
+- Initial release.
