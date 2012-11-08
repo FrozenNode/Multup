@@ -39,6 +39,15 @@ class Multup {
 	*/
 	private $input; 
 	
+	/*	
+		How long the random filename should be
+	*/
+	private $random_length = 32;
+	
+	/*
+	*	Callback function for setting your own random filename
+	*/
+	private $random_cb;
 	
 	/**
 	 * Instantiates the Multup
@@ -64,6 +73,19 @@ class Multup {
 	public static function open($input, $rules, $path, $random = true)
 	{
 		return new Multup( $input, $rules, $path, $random );
+	}
+	
+	/*
+	*	Set the length of the randomized filename
+	*   @param int $len
+	*/
+	public function set_length($len){
+		if(!is_int($len)){
+			return false;
+		} else{
+			$this->random_length = $len;
+		}
+		return $this;
 	}
 	
 	/*
@@ -110,40 +132,60 @@ class Multup {
 	}
 
 	/*
-		Upload the image
+	*	Upload the image
 	*/
-	public function upload_image(){
+	private function upload_image(){
 		
 		/* validate the image */
 		$validation = Validator::make($this->image, array($this->input => $this->rules));
 		$errors = array();	
-		$filename = $this->image[$this->input]['name'];
+		$original_name = $this->image[$this->input]['name'];
 		$path = '';
+		$filename = '';
 		
 		if($validation->fails()){
 			/* use the messages object for the erros */
 			$errors = $validation->errors;
 		} else {
 
-			$ext = File::extension($filename);
 			if($this->random){
-				$filename = Str::random(32).'.'.$ext;
+				if(is_callable($this->random_cb)){
+					$filename =  call_user_func( $this->random_cb, $original_name );
+				} else {
+					$ext = File::extension($original_name);
+					$filename = $this->generate_random_filename().$ext;
+				}
 			}
 			
-			$path= 'public/'.$this->path;
-			
 			/* upload the file */
-			$save = Input::upload($this->input, $path, $filename);
+			$save = Input::upload($this->input, $this->path, $filename);
 
 			if($save){
-				
-			
-				$path = URL::to($this->path.$filename);
+				$path = $this->path.$filename;
 			} else {
 				$errors = 'Could not save image';
 			}
 		}
 		
-		return compact('errors', 'path', 'filename');
+		return compact('errors', 'path', 'filename', 'original_name');
 	}
+	
+	/*
+	* Default random filename generation 
+	*/
+	private function generate_random_filename(){
+		 return Str::random($this->random_length);
+	}
+	
+	/*
+	* Default random filename generation 
+	*/
+	public function filename_callback( $func ){
+		if(is_callable($func)){
+			$this->random_cb = $func;
+		}
+		
+		return $this;
+	}
+	
 }
