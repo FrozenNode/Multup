@@ -131,8 +131,8 @@ You should see a return in your console of something like...
 	[{"errors":[],"path":"public\/images\/originals\/lolcat_imagename.png","filename":"lolcat_imagename.png","original_name":"imagename.png"}]
 	
 ## Copyright and License
-Administrator was written by Nick Kelly for the Laravel framework.
-Administrator is released under the MIT License. See the LICENSE file for details.
+Multup was written by Nick Kelly for the Laravel framework.
+Multup is released under the MIT License. See the LICENSE file for details.
 
 ## Changelog
 
