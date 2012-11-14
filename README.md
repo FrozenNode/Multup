@@ -1,10 +1,10 @@
 # Multup
 
-Multiple image uploading and validation for Laravel using the Laravel validation class.
+Multiple image uploading, validation, and resizing for Laravel using the Laravel validation class and an edited version of the Resizer Bundle.
 
-- **Author:** Nick Kelly
+- **Author:** Nick Kelly w/portions edited from the Resizer bundle by Jarrod Oberto &  Maikel D
 - **Website:** [http://frozennode.com](http://frozennode.com)
-- **Version:** 1.1.0
+- **Version:** 1.2.0
 
 ## Installation
 
@@ -56,6 +56,35 @@ Then to upload multiple images, in your controller function do something like...
 					
 ## Methods
 
+### Resizing
+
+To resize the originals after they are uploaded pass in an array with your sizing information to the sizes method.
+
+	$sizes = array( 
+		array(200 , 200 , 'crop', 'public/images/thumbs/200/', 90 ), 
+		array(300 , 300 , 'crop', 'public/images/thumbs/300/', 90 ), 
+	);
+
+	Multup::open('file', 'image|max:3000|mimes:jpg,gif,png', 'public/images/originals/')
+		->sizes( $sizes )
+		->upload()
+	
+### After Upload
+
+The after_upload method. This should be called before the upload method. It can be any callable function. 
+The function will get passed an array containing the following variables
+	$path: string containing path relative to your app root to access the image
+	$filename: string containing the full filename (including extension) of the uploaded image
+	$original_filename string, the original filename
+	$resizes: array containing booleans indicating the success of each resize
+The variables will be merged with the array you provide in the second parameter
+	
+	Multup::open('file', 'image|max:3000|mimes:jpg,gif,png', 'public/images/originals/')
+		->after_upload(function($args){ return $args['my_var'].'lolcats'; }, array( 'my_var'=> 'ieat_') )
+		->upload();
+
+### Filename Randomization
+
 You set the length of the randomized filename by calling, set_length, after your open Multup.
 	
 	Mutlup::open( 'file', 'image|max:3000|mimes:jpg,gif,png', 'public/images/originals/' )
@@ -64,7 +93,7 @@ You set the length of the randomized filename by calling, set_length, after your
 
 Or, if that doesn't satisfy you, set your own randomization function. Provide a callback function with a parameter for the original filename
 
-	Multup::open('file', 'image|max:3000|mimes:jpg,gif,png', 'public/tattoo_imgs/originals/')
+	Multup::open('file', 'image|max:3000|mimes:jpg,gif,png', 'public/images/originals/')
 			->set_length( 20 )
 			->filename_callback(
 				function( $original_name ){ 
@@ -128,7 +157,7 @@ And your controller (named home for this example) function
 
 You should see a return in your console of something like...
 
-	[{"errors":[],"path":"public\/images\/originals\/lolcat_imagename.png","filename":"lolcat_imagename.png","original_name":"imagename.png"}]
+	[{"errors":[],"path":"public\/images\/originals\/lolcat_imagename.png","filename":"lolcat_imagename.png","original_name":"imagename.png", "resizes": []}]
 	
 ## Copyright and License
 Administrator was written by Nick Kelly for the Laravel framework.
@@ -136,5 +165,5 @@ Administrator is released under the MIT License. See the LICENSE file for detail
 
 ## Changelog
 
-### Multup 1.1.0
-- Added some stuff release.
+### Multup 1.2.0
+- Added some resizing stuff release.
