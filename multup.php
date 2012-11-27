@@ -273,10 +273,9 @@ class Multup {
 				$args['callback_result']  = call_user_func( $this->upload_callback, $args);
 			}
 			
-		} else{
-			$this->errors[] = $save;
 		}
 		
 		return $args;
 	}
+	
 }
