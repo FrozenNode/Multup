@@ -176,6 +176,8 @@ class Multup {
 					$ext = File::extension($original_name);
 					$filename = $this->generate_random_filename().'.'.$ext;
 				}
+			} else {
+				$filename = $original_name;
 			}
 			
 			/* upload the file */
