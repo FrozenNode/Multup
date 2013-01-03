@@ -65,7 +65,8 @@ class Resize{
 				$this->new_height = $size[1]; //$new_height;
 				$this->option = $size[2]; //crop type
 				
-				$resized[] = $this->resize( $path.$filename, $size[3].$filename, $size[4] );
+
+				$resized[] = $this->do_resize( $path.$filename, $size[3].$filename, $size[4] );
 			}
 		}
 		
@@ -79,7 +80,7 @@ class Resize{
 	 * @param  int (0-100) $quality 
 	 * @return bool
 	 */
-	private function resize( $image, $save_path, $image_quality )
+	private function do_resize( $image, $save_path, $image_quality )
 	{
 		$image = $this->open_image( $image );
 		
