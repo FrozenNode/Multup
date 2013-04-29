@@ -28,7 +28,7 @@ Or without the `'auto' => true` to load it on demand:
 
 In your view files, you'd add a file input element.
 
-    <input id="fileupload" type="file" name="file" multiple>
+    <input id="fileupload" type="file" name="file[]" multiple>
 
 In your routes.php file or in any of your controller files, you can start the Multup bundle if you haven't set it to auto-load by calling:
 
